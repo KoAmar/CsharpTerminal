@@ -8,145 +8,136 @@
 // is not lines of text terminated by /n.  This would be because ReadLine() cannot find a line terminator in the wrong type of data.
 // This code is intended for use with lines of text only.  It is not intended for use with any other type of data.
 //
+
 using System;
-using System.IO.Ports;
 using System.Diagnostics;
+using System.IO.Ports;
 
-namespace SERIAL_RX_TX
+namespace Terminal
 {
-  public class SerialComPort
-  {
-    private SerialPort comPort;
-    
-    // constructor
-    public SerialComPort()
+    public class SerialComPort
     {
-      comPort = new SerialPort();
-  }
+        private readonly SerialPort _comPort;
 
-    ~SerialComPort()
-    {
-      Close();
-    }
-
-
-    // User must register function to call when a line of text terminated by \n has been received
-    public delegate void ReceiveCallback(string receivedMessage);
-    public event ReceiveCallback onMessageReceived = null;
-    public void RegisterReceiveCallback(ReceiveCallback FunctionToCall)
-    {
-      onMessageReceived += FunctionToCall;
-    }
-    public void DeRegisterReceiveCallback(ReceiveCallback FunctionToCall)
-    {
-      onMessageReceived -= FunctionToCall;
-    }
-
-    public void SendLine(string aString)
-    {
-      try
-      {
-        if (comPort.IsOpen)
+        // constructor
+        public SerialComPort()
         {
-          comPort.Write(aString);
+            _comPort = new SerialPort();
         }
-      }
-      catch (Exception exp)
-      {
-        Debug.Print(exp.Message);
-      }
-    }
 
-    public string Open(string portName, string baudRate, string dataBits, string parity, string stopBits)
-    {
-      try
-      {
-        comPort.WriteBufferSize = 4096;
-        comPort.ReadBufferSize = 4096;
-        comPort.WriteTimeout = 500;
-        comPort.ReadTimeout = 500;
-        comPort.DtrEnable = true;
-        comPort.Handshake = Handshake.None;
-        comPort.PortName = portName.TrimEnd();
-        comPort.BaudRate = Convert.ToInt32(baudRate);
-        comPort.DataBits = Convert.ToInt32(dataBits);
-        switch (parity)
+        ~SerialComPort()
         {
-          case "None":
-            comPort.Parity = Parity.None;
-            break;
-          case "Even":
-            comPort.Parity = Parity.Even;
-            break;
-          case "Odd":
-            comPort.Parity = Parity.Odd;
-            break;
+            Close();
         }
-        switch (stopBits)
+
+
+        // User must register function to call when a line of text terminated by \n has been received
+        public delegate void ReceiveCallback(string receivedMessage);
+        public event ReceiveCallback OnMessageReceived;
+        public void RegisterReceiveCallback(ReceiveCallback functionToCall)
         {
-          case "One":
-            comPort.StopBits = StopBits.One;
-            break;
-          case "Two":
-            comPort.StopBits = StopBits.Two;
-            break;
+            OnMessageReceived += functionToCall;
         }
-        comPort.Open();
-        comPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-      }
-      catch (Exception error)
-      {
-        return error.Message + "\r\n";
-      }
-      if (comPort.IsOpen)
-      {
-        return string.Format("{0} Opened \r\n", comPort.PortName);
-      }
-      else
-      {
-        return string.Format("{0} Open Failed \r\n", comPort.PortName);
-      }
-    }
-
-    public string Close()
-    {
-      try
-      {
-        comPort.Close();
-      }
-      catch (Exception error)
-      {
-        return error.Message + "\r\n";
-      }
-      return string.Format("{0} Closed\r\n", comPort.PortName);
-    }
-
-    public bool IsOpen()
-    {
-      return comPort.IsOpen;
-    }
-
-    private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
-    {
-      if (!comPort.IsOpen)
-      {
-        return;
-      }
-      string indata = string.Empty;
-      try
-      {
-        indata = comPort.ReadLine();
-        indata += "\n";
-        if (onMessageReceived != null)
+        public void DeRegisterReceiveCallback(ReceiveCallback functionToCall)
         {
-          onMessageReceived(indata);
+            OnMessageReceived -= functionToCall;
         }
-      }
-      catch (Exception error)
-      {
-        Debug.Print(error.Message);
-      }
-       
+
+        public void SendLine(string aString)
+        {
+            try
+            {
+                if (_comPort.IsOpen)
+                {
+                    _comPort.Write(aString);
+                }
+            }
+            catch (Exception exp)
+            {
+                Debug.Print(exp.Message);
+            }
+        }
+
+        public string Open(string portName, string baudRate, string dataBits, string parity, string stopBits)
+        {
+            try
+            {
+                _comPort.WriteBufferSize = 4096;
+                _comPort.ReadBufferSize = 4096;
+                _comPort.WriteTimeout = 500;
+                _comPort.ReadTimeout = 500;
+                _comPort.DtrEnable = true;
+                _comPort.Handshake = Handshake.None;
+                _comPort.PortName = portName.TrimEnd();
+                _comPort.BaudRate = Convert.ToInt32(baudRate);
+                _comPort.DataBits = Convert.ToInt32(dataBits);
+                switch (parity)
+                {
+                    case "None":
+                        _comPort.Parity = Parity.None;
+                        break;
+                    case "Even":
+                        _comPort.Parity = Parity.Even;
+                        break;
+                    case "Odd":
+                        _comPort.Parity = Parity.Odd;
+                        break;
+                }
+                switch (stopBits)
+                {
+                    case "One":
+                        _comPort.StopBits = StopBits.One;
+                        break;
+                    case "Two":
+                        _comPort.StopBits = StopBits.Two;
+                        break;
+                }
+                _comPort.Open();
+                _comPort.DataReceived += DataReceivedHandler;
+            }
+            catch (Exception error)
+            {
+                return error.Message + "\r\n";
+            }
+            return _comPort.IsOpen ? $"{_comPort.PortName} Opened \r\n" : $"{_comPort.PortName} Open Failed \r\n";
+        }
+
+        public string Close()
+        {
+            try
+            {
+                _comPort.Close();
+            }
+            catch (Exception error)
+            {
+                return error.Message + "\r\n";
+            }
+            return $"{_comPort.PortName} Closed\r\n";
+        }
+
+        public bool IsOpen()
+        {
+            return _comPort.IsOpen;
+        }
+
+        private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
+        {
+            if (!_comPort.IsOpen)
+            {
+                return;
+            }
+
+            try
+            {
+                var inData = _comPort.ReadLine();
+                inData += "\n";
+                OnMessageReceived?.Invoke(inData);
+            }
+            catch (Exception error)
+            {
+                Debug.Print(error.Message);
+            }
+
+        }
     }
-  }
 }

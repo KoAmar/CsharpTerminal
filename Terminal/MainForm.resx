@@ -117,4 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Main_BAbout_Click_" xml:space="preserve">
+    <value>Written by Dale Gambill (same as 'Software Guy For You' on Youtube)
+
+TERMINAL demonstrates event-handling of serial COM port data as follows:
+
+1 - getting messages from a COM port via a callback function
+2 - sending messages from a file to the COM port, one at a time
+3 - sending log file messages and receiving messages at the same time
+
+Source code at: Github URL: https://github.com/dalegambill/CsharpTerminal
+</value>
+  </data>
 </root>

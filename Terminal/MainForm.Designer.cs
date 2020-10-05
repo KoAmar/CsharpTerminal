@@ -89,7 +89,7 @@
       this.bOpenComPort.TabIndex = 4;
       this.bOpenComPort.Text = "Open COM Port";
       this.bOpenComPort.UseVisualStyleBackColor = true;
-      this.bOpenComPort.Click += new System.EventHandler(this.bOpenComPort_Click);
+      this.bOpenComPort.Click += new System.EventHandler(this.BOpenComPort_Click);
       // 
       // bClearRxData
       // 
@@ -100,7 +100,7 @@
       this.bClearRxData.TabIndex = 5;
       this.bClearRxData.Text = "Clear Rx Data";
       this.bClearRxData.UseVisualStyleBackColor = true;
-      this.bClearRxData.Click += new System.EventHandler(this.bClearRxData_Click);
+      this.bClearRxData.Click += new System.EventHandler(this.BClearRxData_Click);
       // 
       // bReplayLog
       // 
@@ -111,7 +111,7 @@
       this.bReplayLog.TabIndex = 6;
       this.bReplayLog.Text = "Replay Log";
       this.bReplayLog.UseVisualStyleBackColor = true;
-      this.bReplayLog.Click += new System.EventHandler(this.bReplayLog_Click);
+      this.bReplayLog.Click += new System.EventHandler(this.BReplayLog_Click);
       // 
       // bSendMessage
       // 
@@ -122,7 +122,7 @@
       this.bSendMessage.TabIndex = 7;
       this.bSendMessage.Text = "Send Message";
       this.bSendMessage.UseVisualStyleBackColor = true;
-      this.bSendMessage.Click += new System.EventHandler(this.bSendMessage_Click);
+      this.bSendMessage.Click += new System.EventHandler(this.BSendMessage_Click);
       // 
       // BAbout
       // 
@@ -144,7 +144,7 @@
       this.bTutorials.TabIndex = 9;
       this.bTutorials.Text = "Tutorials";
       this.bTutorials.UseVisualStyleBackColor = true;
-      this.bTutorials.Click += new System.EventHandler(this.bTutorials_Click);
+      this.bTutorials.Click += new System.EventHandler(this.BTutorials_Click);
       // 
       // tbMessageToSend
       // 
