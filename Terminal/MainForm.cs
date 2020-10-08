@@ -20,15 +20,12 @@ namespace Terminal
             _file = null;
             _serialPort = new SerialComPort();
             _serialPort.RegisterReceiveCallback(ReceiveDataHandler);
-
-            var receivedDataTimer = new Timer { Interval = 25 }; // 25 ms
+            var receivedDataTimer = new Timer {Interval = 25}; // 25 ms
             receivedDataTimer.Tick += ReceivedDataTimerTick;
             receivedDataTimer.Start();
-
-            var replayLogTimer = new Timer { Interval = 1000 }; // 1000 ms
+            var replayLogTimer = new Timer {Interval = 1000}; // 1000 ms
             replayLogTimer.Tick += ReplayLogTimerTick;
             replayLogTimer.Start();
-
             var version = Assembly.GetEntryAssembly()?.GetName().Version;
             Text = "TERMINAL - Serial Data Terminal v" + version;
         }
@@ -72,7 +69,7 @@ namespace Terminal
                 }
                 else
                 {
-                    _file.BaseStream.Seek(0, 0);  // start over reading the file
+                    _file.BaseStream.Seek(0, 0); // start over reading the file
                 }
             }
             catch (Exception error)
@@ -94,14 +91,12 @@ namespace Terminal
         private void BAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                  "Written by Dale Gambill (same as 'Software Guy For You' on Youtube)\r\n\r\n" +
-                  "TERMINAL demonstrates event-handling of serial COM port data as follows:\r\n\r\n" +
-                  "1 - getting messages from a COM port via a callback function\r\n" +
-                  "2 - sending messages from a file to the COM port, one at a time\r\n" +
-                  "3 - sending log file messages and receiving messages at the same time\r\n\r\n" +
-                  "Source code at: Github URL: https://github.com/dalegambill/CsharpTerminal\r\n",
-                  @"About"
-              );
+                "Written by Dale Gambill (same as 'Software Guy For You' on Youtube)\r\n\r\n" +
+                "TERMINAL demonstrates event-handling of serial COM port data as follows:\r\n\r\n" +
+                "1 - getting messages from a COM port via a callback function\r\n" +
+                "2 - sending messages from a file to the COM port, one at a time\r\n" +
+                "3 - sending log file messages and receiving messages at the same time\r\n\r\n" +
+                "Source code at: Github URL: https://github.com/dalegambill/CsharpTerminal\r\n", @"About");
         }
 
         private void BOpenComPort_Click(object sender, EventArgs e)
@@ -121,6 +116,7 @@ namespace Terminal
                 status = _serialPort.Close();
                 bOpenComPort.Text = @"Open COM Port";
             }
+
             UpdateDataWindow(status);
         }
 
@@ -155,6 +151,7 @@ namespace Terminal
                 UpdateDataWindow("Open COM port first\r\n");
                 return;
             }
+
             if (bReplayLog.Text == @"Replay Log")
             {
                 var openFileDialog = new OpenFileDialog();
